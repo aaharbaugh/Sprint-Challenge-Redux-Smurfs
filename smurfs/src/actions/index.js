@@ -15,3 +15,19 @@ export const fetchSmurf = () => dispatch => {
         dispatch({ type: FETCH_SMURF_FAIL, payload: err})
       })
 };
+
+export const ADD_SMURF = "ADD_SMURF";
+export const ADDED_SMURF = "ADDED_SMURF";
+export const ADD_SMURF_FAIL = "ADD_SMURF_FAIL";
+
+export const addSmurf = newSmurf => dispatch => {
+    dispatch({ type: ADD_SMURF });
+    axios
+      .post("http://localhost:3333/smurfs", newSmurf)
+      .then(res => {
+        dispatch({ type: ADDED_SMURF, payload: res.data})
+      })
+      .catch(err => {
+        dispatch({ type: ADD_SMURF_FAIL, payload: err})
+      })
+};
