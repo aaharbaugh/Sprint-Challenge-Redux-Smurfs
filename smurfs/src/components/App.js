@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect} from 'react-redux';
-import  { fetchSmurf, addSmurf } from '../actions/index';
+import  { fetchSmurf, addSmurf, deleteSmurf } from '../actions/index';
 
 
 
@@ -32,6 +32,11 @@ class App extends Component {
     this.props.addSmurf(this.state.newSmurf)
   }
 
+  deleteSmurf = smurfId => {
+
+    this.props.deleteSmurf(smurfId)
+  }
+
   render() {
     return (
       <div className="App">
@@ -41,9 +46,10 @@ class App extends Component {
             <h5>{smurf.name}</h5>
             <p>Age: {smurf.age}</p>
             <p>Height: {smurf.height}</p>
+            <button onClick={() => this.deleteSmurf(smurf.id)}>Delete This Smurf</button>
           </div>
         )}
-        <div className="smurForm">
+        <div className="smurfForm">
           <form onSubmit={this.addSmurf}>
             Name: <input
               type="text"
@@ -77,5 +83,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchSmurf, addSmurf }
+  { fetchSmurf, addSmurf, deleteSmurf }
 )(App);

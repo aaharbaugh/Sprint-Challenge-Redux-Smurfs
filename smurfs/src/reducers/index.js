@@ -1,4 +1,13 @@
-import {FETCH_SMURF, FETCHED_SMURF, FETCH_SMURF_FAIL, ADD_SMURF, ADDED_SMURF, ADD_SMURF_FAIL} from '../actions/index';
+import {
+  FETCH_SMURF, 
+  FETCHED_SMURF, 
+  FETCH_SMURF_FAIL, 
+  ADD_SMURF, 
+  ADDED_SMURF, 
+  ADD_SMURF_FAIL,
+  DELETE_SMURF,
+  DELETED_SMURF,
+  DELETE_SMURF_FAIL} from '../actions/index';
 
 const initialState = {
   smurfs: [],
@@ -55,6 +64,25 @@ function reducer(state = initialState, action){
       return {
         ...state,
         addingSmurfs: false,
+        error: action.payload
+      }
+    case DELETE_SMURF:
+      return {
+        ...state,
+        deletingSmurfs: true,
+        error: null
+      };
+    case DELETED_SMURF:
+      return {
+        ...state,
+        deletingSmurfs: false,
+        error: null,
+        smurfs: action.payload
+      };
+    case DELETE_SMURF_FAIL:
+      return {
+        ...state,
+        deletingSmurfs: false,
         error: action.payload
       }
     default:
