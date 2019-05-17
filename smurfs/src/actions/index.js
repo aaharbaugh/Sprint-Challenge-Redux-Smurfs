@@ -1,12 +1,17 @@
 import axios from 'axios';
 
-/*
-  For this project you'll need at least 2 action creators for the main portion,
-   and 2 more for the stretch problem.
-   Be sure to include action types for each type of action creator. Also, be sure to mind
-     the "pending" states like, fetching, creating, updating and deleting.
-   C - addSmurf
-   R - getSmurfs
-   U - updateSmurf
-   D - deleteSmurf
-*/
+export const FETCH_SMURF = "FETCH_SMURF";
+export const FETCHED_SMURF = "FETCHED_SMURF";
+export const FETCH_SMURF_FAIL = "FETCH_SMURF_FAIL";
+
+export const fetchSmurf = () => dispatch => {
+    dispatch({ type: FETCH_SMURF });
+    axios
+      .get("http://localhost:3333/smurfs")
+      .then(res => {
+        dispatch({ type: FETCHED_SMURF, payload: res.data })
+      })
+      .catch(err => {
+        dispatch({ type: FETCH_SMURF_FAIL, payload: err})
+      })
+};
