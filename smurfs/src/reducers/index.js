@@ -7,7 +7,11 @@ import {
   ADD_SMURF_FAIL,
   DELETE_SMURF,
   DELETED_SMURF,
-  DELETE_SMURF_FAIL} from '../actions/index';
+  DELETE_SMURF_FAIL,
+  UPDATE_SMURF,
+  UPDATED_SMURF,
+  UPDATE_SMURF_FAIL
+} from '../actions/index';
 
 const initialState = {
   smurfs: [],
@@ -83,6 +87,25 @@ function reducer(state = initialState, action){
       return {
         ...state,
         deletingSmurfs: false,
+        error: action.payload
+      }
+    case UPDATE_SMURF:
+      return {
+        ...state,
+        updatingSmurf: true,
+        error: null
+      };
+    case UPDATED_SMURF:
+      return {
+        ...state,
+        updatingSmurf: false,
+        error: null,
+        smurfs: action.payload
+      };
+    case UPDATE_SMURF_FAIL:
+      return {
+        ...state,
+        updatingSmurf: false,
         error: action.payload
       }
     default:

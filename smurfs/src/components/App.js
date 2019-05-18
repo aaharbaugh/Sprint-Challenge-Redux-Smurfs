@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect} from 'react-redux';
-import  { fetchSmurf, addSmurf, deleteSmurf } from '../actions/index';
-
-
+import  { fetchSmurf, addSmurf, deleteSmurf, updateSmurf } from '../actions/index';
 
 class App extends Component {
   state = {
+    updatingSmurf: false,
+    smurfId: '',
     newSmurf: {
       name: '',
       height: '',
@@ -29,12 +29,47 @@ class App extends Component {
 
   addSmurf = e => {
     e.preventDefault();
-    this.props.addSmurf(this.state.newSmurf)
+    if(this.state.updatingSmurf === true){
+      console.log('hi')
+      this.props.updateSmurf(this.state.smurfId, this.state.newSmurf).then(() => {
+        this.props.fetchSmurf()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    } else {
+      this.props.addSmurf(this.state.newSmurf)
+    }
+    this.clearForm();
+    
   }
 
   deleteSmurf = smurfId => {
-
     this.props.deleteSmurf(smurfId)
+  }
+
+  updateSmurf = smurf => {
+    this.setState({
+      smurfId: smurf.id,
+      updatingSmurf: true,
+      newSmurf: {
+        name: smurf.name,
+        height: smurf.height,
+        age: smurf.age
+      }
+    })
+  }
+
+  clearForm() {
+    this.setState({
+      updatingSmurf: false,
+      smurfId: '',
+      newSmurf: {
+        name: '',
+        height: '',
+        age: ''
+      }
+    })
   }
 
   render() {
@@ -46,7 +81,8 @@ class App extends Component {
             <h5>{smurf.name}</h5>
             <p>Age: {smurf.age}</p>
             <p>Height: {smurf.height}</p>
-            <button onClick={() => this.deleteSmurf(smurf.id)}>Delete This Smurf</button>
+            <button onClick={() => this.deleteSmurf(smurf.id)}>Delete</button>
+            <button onClick={() => this.updateSmurf(smurf)}>Update</button>
           </div>
         )}
         <div className="smurfForm">
@@ -69,7 +105,8 @@ class App extends Component {
               value={this.state.newSmurf.height}
               onChange={this.handleChange}
             /><br />
-          <button>Add Smurf</button>
+          <button>{this.state.updatingSmurf ? 'Update Smurf': 'Add Smurf'}</button>
+          <button onClick={() => this.clearForm}>Clear</button>
           </form>
         </div>
       </div>
@@ -83,5 +120,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchSmurf, addSmurf, deleteSmurf }
+  { fetchSmurf, addSmurf, deleteSmurf, updateSmurf}
 )(App);
