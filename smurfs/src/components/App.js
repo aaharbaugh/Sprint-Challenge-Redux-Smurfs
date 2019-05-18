@@ -60,7 +60,8 @@ class App extends Component {
     })
   }
 
-  clearForm() {
+  clearForm = e => {
+    e.preventDefault();
     this.setState({
       updatingSmurf: false,
       smurfId: '',
@@ -86,7 +87,7 @@ class App extends Component {
           </div>
         )}
         <div className="smurfForm">
-          <form onSubmit={this.addSmurf}>
+          <form>
             Name: <input
               type="text"
               name="name"
@@ -105,7 +106,7 @@ class App extends Component {
               value={this.state.newSmurf.height}
               onChange={this.handleChange}
             /><br />
-          <button>{this.state.updatingSmurf ? 'Update Smurf': 'Add Smurf'}</button>
+          <button onClick={() => this.addSmurf}>{this.state.updatingSmurf ? 'Update Smurf': 'Add Smurf'}</button>
           <button onClick={() => this.clearForm}>Clear</button>
           </form>
         </div>
